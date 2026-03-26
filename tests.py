@@ -127,3 +127,31 @@ def test_remove_choice_using_invalid_id():
     question.add_choice('b', False)
     with pytest.raises(Exception):
         question.remove_choice_by_id('adawdawdaw')
+
+@pytest.fixture
+def wrong_id():
+    return 'r'
+
+@pytest.fixture
+def correct_id():
+    return 1
+
+@pytest.fixture
+def max_points():
+    return 100
+
+def test_mixed_valid_and_invalid_ids_to_remove_choice(wrong_id, correct_id):
+    question = Question(title='q1', points=2, max_selections=2)
+
+    question.add_choice('a', True)
+    question.add_choice('b', False)
+
+    question.remove_choice_by_id(correct_id)
+
+    with pytest.raises(Exception):
+        question.remove_choice_by_id(wrong_id)
+
+def test_create_question_with_invalid_points(max_points):
+    with pytest.raises(Exception):
+        question = Question(title='q1', points=max_points + 1, max_selections=1)
+
